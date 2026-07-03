@@ -3,7 +3,7 @@ import { Column, Model, Table } from "sequelize-typescript";
 
 
 interface userTableInterface{
-  id : string , 
+  id ?: string , 
   name : string ,
   email : string , 
   password : string ,
