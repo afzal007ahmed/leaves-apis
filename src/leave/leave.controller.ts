@@ -54,13 +54,11 @@ export class LeaveController {
   @UseGuards(AuthGaurd)
   @Patch('/:id/approve')
   async approveLeaveRequest(@Request() req: any, @Param('id') id: string) {
-    const user = req.user;
-    return await this.leaveService.approveLeaveRequest(user, id);
+    return await this.leaveService.approveLeaveRequest(id);
   }
   @UseGuards(AuthGaurd)
   @Patch('/:id/reject')
   async rejectLeaveRequest(@Request() req: any, @Param('id') id: string) {
-    const user = req.user;
-    return await this.leaveService.rejectLeaveRequest(user, id);
+    return await this.leaveService.rejectLeaveRequest(id);
   }
 }

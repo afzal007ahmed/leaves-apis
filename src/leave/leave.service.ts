@@ -57,9 +57,9 @@ export class LeaveService {
       where: { id: id, userId: user.id, status: 'Pending' },
     });
   }
-  async approveLeaveRequest(user: UserDataInterface, id: string) {
+  async approveLeaveRequest( id: string) {
     const leaveData = await Leaves.findOne({
-      where: { id: id, userId: user.id, status: 'Pending' },
+      where: { id: id,  status: 'Pending' },
     });
     if (!leaveData) {
       throw new NotFoundException(
@@ -68,12 +68,12 @@ export class LeaveService {
     }
     return await Leaves.update(
       { status: 'Approved' },
-      { where: { id: id, userId: user.id, status: 'Pending' } },
+      { where: { id: id, status: 'Pending' } },
     );
   }
-  async rejectLeaveRequest(user: UserDataInterface, id: string) {
+  async rejectLeaveRequest( id: string) {
     const leaveData = await Leaves.findOne({
-      where: { id: id, userId: user.id, status: 'Pending' },
+      where: { id: id, status: 'Pending' },
     });
     if (!leaveData) {
       throw new NotFoundException(
@@ -82,7 +82,7 @@ export class LeaveService {
     }
     return await Leaves.update(
       { status: 'Rejected' },
-      { where: { id: id, userId: user.id, status: 'Pending' } },
+      { where: { id: id, status: 'Pending' } },
     );
   }
 }

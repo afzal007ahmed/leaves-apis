@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from './model/user.model';
 import jwt from 'jsonwebtoken';
 import { config } from './../../config/index';
@@ -21,7 +25,12 @@ export class UserService {
   async loginUser(data: LoginUserInterface) {
     const userData = await User.findOne({ where: { email: data.email } });
     if (!userData) {
-      throw new NotFoundException("user not found")
+      throw new NotFoundException('user not found');
+    }
+    const userCreds = userData.dataValues ;
+    const isMatch = await bcrypt.compare(data.password, userCreds.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Password mismatched');
     }
     const payload = { id: userData.id, role: userData.role };
     const token = jwt.sign(payload, config.jwt.secret as string, {
