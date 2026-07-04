@@ -1,11 +1,19 @@
-import { Model } from 'sequelize';
-import { Column, DataType, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Table,
+  Model,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
+import { User } from 'src/user/model/user.model';
 
 interface LeaveTableInterface {
+  id?: string;
   reason: string;
-  fromDate: string;
-  toDate: string;
-  status: string;
+  fromDate: Date;
+  toDate: Date;
+  status?: string;
   userId: string;
 }
 
@@ -14,7 +22,8 @@ interface LeaveTableInterface {
 })
 export class Leaves extends Model<LeaveTableInterface> {
   @Column({
-    type: DataType.STRING,
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
     primaryKey: true,
     allowNull: false,
   })
@@ -37,9 +46,14 @@ export class Leaves extends Model<LeaveTableInterface> {
     defaultValue: 'Pending',
   })
   status: string;
+  
+  @ForeignKey(() => User)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   userId: string;
+
+  @BelongsTo(() => User)
+  user: User;
 }

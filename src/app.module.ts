@@ -10,6 +10,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { config } from '../config/index';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { LeavesModule } from './leave/leave.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthMiddleware } from './middleware/auth.middleware';
       autoLoadModels: true,
     }),
     UserModule,
+    LeavesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -42,6 +44,9 @@ export class AppModule implements NestModule {
           method: RequestMethod.POST,
         },
       )
-      .forRoutes('users');
+      .forRoutes(
+        { path: 'users', method: RequestMethod.ALL },
+        { path: 'leaves', method: RequestMethod.ALL },
+      );
   }
 }
