@@ -9,10 +9,12 @@ import {
   Post,
   Req,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { LeaveService } from './leave.service';
 import { ApplyLeaveDto } from './dto/apply-leave-dto';
 import { UpdateLeaveDto } from './dto/update-leave-dto';
+import { AuthGaurd } from 'src/gaurd/auth.gaurd';
 
 @Controller('leaves')
 export class LeaveController {
@@ -28,11 +30,13 @@ export class LeaveController {
     const user = req.user;
     return this.leaveService.applyLeave(body, user);
   }
+  @UseGuards(AuthGaurd)
   @Get('/')
   myLeaves(@Request() req: any) {
     const user = req.user;
     return this.leaveService.myLeaves(user);
   }
+
   @Patch('/:id')
   async updateLeave(
     @Param('id') id: string,
@@ -46,5 +50,17 @@ export class LeaveController {
   async deleteLeave(@Param('id') id: string, @Request() req: any) {
     const user = req.user;
     return await this.leaveService.deleteLeave(user, id);
+  }
+  @UseGuards(AuthGaurd)
+  @Patch('/:id/approve')
+  async approveLeaveRequest(@Request() req: any, @Param('id') id: string) {
+    const user = req.user;
+    return await this.leaveService.approveLeaveRequest(user, id);
+  }
+  @UseGuards(AuthGaurd)
+  @Patch('/:id/reject')
+  async rejectLeaveRequest(@Request() req: any, @Param('id') id: string) {
+    const user = req.user;
+    return await this.leaveService.rejectLeaveRequest(user, id);
   }
 }
