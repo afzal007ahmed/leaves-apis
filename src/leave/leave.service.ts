@@ -44,4 +44,17 @@ export class LeaveService {
       { where: { id: id, userId: user.id } },
     );
   }
+  async deleteLeave(user: UserDataInterface, id: string) {
+    const leaveData = await Leaves.findOne({
+      where: { id: id, userId: user.id, status: 'Pending' },
+    });
+    if (!leaveData) {
+      throw new NotFoundException(
+        "Unable to find this leave. This leave may be not pending or not your's.",
+      );
+    }
+    return await Leaves.destroy({
+      where: { id: id, userId: user.id, status: 'Pending' },
+    });
+  }
 }

@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -39,6 +40,11 @@ export class LeaveController {
     @Request() req: any,
   ) {
     const user = req.user;
-    return this.leaveService.updateLeave(user, body, id);
+    return await this.leaveService.updateLeave(user, body, id);
+  }
+  @Delete('/:id')
+  async deleteLeave(@Param('id') id: string, @Request() req: any) {
+    const user = req.user;
+    return await this.leaveService.deleteLeave(user, id);
   }
 }
