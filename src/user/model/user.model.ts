@@ -4,7 +4,7 @@ import { Column, Model, Table } from "sequelize-typescript";
 
 interface userTableInterface{
   id ?: string , 
-  name : string ,
+  name? : string ,
   email : string , 
   password : string ,
   role? : string 
@@ -29,7 +29,8 @@ export class User extends Model<userTableInterface>{
     name : string ;
     @Column({
         type : DataTypes.STRING ,
-        allowNull : false 
+        allowNull : false ,
+        unique : true 
     })
     email : string ;
     @Column({
