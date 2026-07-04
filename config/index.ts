@@ -11,6 +11,6 @@ export const config = {
     password: process.env.DB_PASS,
   },
   jwt : {
-    secret : process.env.JWT_SECRET
+    secret : process.env.JWT_SECRET!
   }
 };
