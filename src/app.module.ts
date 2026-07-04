@@ -11,6 +11,8 @@ import { config } from '../config/index';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { LeavesModule } from './leave/leave.module';
+import { UserController } from './user/user.controller';
+import { LeaveController } from './leave/leave.controller';
 
 @Module({
   imports: [
@@ -44,9 +46,6 @@ export class AppModule implements NestModule {
           method: RequestMethod.POST,
         },
       )
-      .forRoutes(
-        { path: 'users', method: RequestMethod.ALL },
-        { path: 'leaves', method: RequestMethod.ALL },
-      );
+      .forRoutes(UserController, LeaveController);
   }
 }
